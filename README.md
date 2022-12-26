@@ -1,5 +1,5 @@
 
-# Insert and Edit Information Using jQuery-AJAX on Modal using data-id.
+# Insert with form validation and Edit Information Using jQuery-AJAX on Modal using data-id.
 
 In this work we will edit Information using jQuery AJAX on a Modal.
 Specially we will do 'Select' & 'Radio' button on selected when we do Edit.
@@ -12,36 +12,39 @@ Specially we will do 'Select' & 'Radio' button on selected when we do Edit.
 ```bash
 Button :
 
-  <p>Bill to the same address <a href="#" id="billing_id" data-id = {{$address->id}} 
+  <p>address <a href="#" id="id" data-id = {{$address->id}} 
   class="text-decoration-none text-primary"data-bs-toggle="modal"  
-  data-bs-target="#staticBackdropforBillingAddressEdit" >Edit</a></p>
+  data-bs-target="#staticBackdropforAddressEdit" >Edit</a></p>
 ```
 
 - Than we will write jQuery-AJAX code on <script> ... </script> (If blade file) or you can write this code on .js file.
 ```bash
-  jQuery(document).on('click','#billing_id',function(event)
+  jQuery(document).on('click','#id',function(event)
   {
         event.preventDefault();
-        var billing_id = jQuery(this).data('id');
+        var id = jQuery(this).data('id');
         $.ajax({
                 url     : "{{ route('billing_address') }}",
                 type    : 'GET',
                 dataType: 'json',
                 data    : {
-                    id : billing_id,
+                    id : id,
                 },
                 success : function(response){
                     console.log(response.billingAddress.id);
-                    jQuery('#bill_contact_person_name').val(response.billingAddress.contact_person_name);
-                    jQuery('#bill_phone').val(response.billingAddress.phone);
-                    jQuery('#bill_address').val(response.billingAddress.address);
+                    jQuery('#id').val(response.Address.name);
+                    jQuery('#id').val(response.Address.phone);
+                    jQuery('#id').val(response.Address.address);
                     
+                    //radio-button
                     if (response.billingAddress.address_type === 'office') {
                         $('#bill_address_type_office').prop('checked', true);
                     }
                     else{
                         $('#bill_address_type_home').prop('checked', true);
                     }
+                    
+                    //select-option 
                     $("#bill_city").val(response.billingAddress.city).change();
                     $("#bill_zip").val(response.billingAddress.zip).change();
                     jQuery('#billingAddress_id').val(response.billingAddress.id);
@@ -52,12 +55,12 @@ Button :
 
 - Than go to Controller write Query and send it to response.
 ```bash
-  public function billing_address_edit(Request $request)
+  public function address_edit(Request $request)
     {
         $id=$request->id;
-        $billingAddress = BillingAddress::findOrFail($id);
+        $val = Model::findOrFail($id);
         return response()->json([
-            'billingAddress' => $billingAddress
+            'billingAddress' => $val
         ]);
     }   
 ```
@@ -68,7 +71,7 @@ Button :
             success: "valid"
         });
 
-        $("#addShippingAddressForm").validate({
+        $("#AddressForm").validate({
             rules: {
 
             },
@@ -80,9 +83,9 @@ Button :
             },
             submitHandler: function(form) {
                 $.ajax({
-                    url: "{{route('customer.choose-shipping-address')}}",
+                    url: "{{route('route-name')}}",
                     type: "POST",
-                    data: $('#addShippingAddressForm').serialize(),
+                    data: $('#AddressForm').serialize(),
                     success: function(data) {
                         window.location.reload();
                     }
