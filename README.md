@@ -1,5 +1,5 @@
 
-# Edit Information Using jQuery-AJAX on Modal using data-id.
+# Insert and Edit Information Using jQuery-AJAX on Modal using data-id.
 
 In this work we will edit Information using jQuery AJAX on a Modal.
 Specially we will do 'Select' & 'Radio' button on selected when we do Edit.
