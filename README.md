@@ -62,6 +62,36 @@ Button :
     }   
 ```
 
+- Insert Data using ajax with form validation(use validation cdn) : 
+```bash
+  $.validator.setDefaults({
+            success: "valid"
+        });
+
+        $("#addShippingAddressForm").validate({
+            rules: {
+
+            },
+            messages:{
+
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).next('label.error').remove();
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: "{{route('customer.choose-shipping-address')}}",
+                    type: "POST",
+                    data: $('#addShippingAddressForm').serialize(),
+                    success: function(data) {
+                        window.location.reload();
+                    }
+                });
+                return false;
+            }
+        });   
+```
+
 ## Screenshots
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
